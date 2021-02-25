@@ -26,14 +26,6 @@ COPY ./srcs/nginx etc/nginx/sites-available/nginx
 RUN ln -s /etc/nginx/sites-available/nginx /etc/nginx/sites-enabled/nginx
 RUN rm -rf /etc/nginx/sites-enabled/default
 
-#MySQL
-RUN service mysql start \
-    && mysql -u root --skip-password\
-	&& mysql -execute="CREATE DATABASE pantigon_db; \
-						GRANT ALL PRIVILEGES ON pantigon_db.* TO 'root'@'localhost'; \
-						FLUSH PRIVILEGES; \
-						UPDATE mysql.user SET plugin = '' WHERE user='root';"
-
 WORKDIR var/www/pantigon
 
 #phpMyAdmin

@@ -15,8 +15,8 @@ server {
         ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
         ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
-        root /var/www/pantigon;
-        index start.php index.php index.html index.htm index.nginx-debian.html index.php;
+        root /var/www/html;
+        index index.php index.html index.htm index.nginx-debian.html;
 
 		location / {
                 autoindex on;

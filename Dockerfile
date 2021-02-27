@@ -1,4 +1,14 @@
-
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pantigon <pantigon@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/02/27 13:51:39 by pantigon          #+#    #+#              #
+#    Updated: 2021/02/27 13:51:39 by pantigon         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 FROM debian:buster
 
@@ -11,7 +21,6 @@ RUN apt-get -y install mariadb-server
 
 EXPOSE 80 443
 
-#RUN mkdir -p var/www/pantigon/
 RUN touch /var/www/html/index.php
 RUN echo "<?php phpinfo(); ?>" >> /var/www/html/index.php
 
@@ -22,6 +31,8 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 WORKDIR var/www/html
+
+#for demonstration autoindex
 RUN mkdir -p test_index/autoindex_working
 
 # nginx
@@ -41,7 +52,7 @@ RUN chmod -R 755 /var/www/*
 
 #wp
 RUN wget https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz && rm -rf latest.tar.gz
-COPY ./srcs/wp-config.php wordpress/
+COPY ./srcs/wp-config.php wordpress
 
 COPY ./srcs/start_server.sh ./
 COPY ./srcs/index_off.sh ./

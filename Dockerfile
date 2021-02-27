@@ -21,8 +21,8 @@ RUN apt-get -y install mariadb-server
 
 EXPOSE 80 443
 
-RUN touch /var/www/html/index.php
-RUN echo "<?php phpinfo(); ?>" >> /var/www/html/index.php
+# RUN touch /var/www/html/index.php
+# RUN echo "<?php phpinfo(); ?>" >> /var/www/html/index.php
 
 
 # SSL
@@ -31,9 +31,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 WORKDIR var/www/html
-
-#for demonstration autoindex
-RUN mkdir -p test_index/autoindex_working
+RUN rm -rf index.nginx-debian.html 
 
 # nginx
 COPY /srcs/nginx_on /etc/nginx/sites-available/nginx_on
@@ -47,13 +45,12 @@ RUN tar -xf phpMyAdmin-5.0.1-english.tar.gz && rm -rf phpMyAdmin-5.0.1-english.t
 RUN mv phpMyAdmin-5.0.1-english phpmyadmin
 COPY ./srcs/config.inc.php phpmyadmin
 
-RUN chown -R www-data:www-data /var/www/*
-RUN chmod -R 755 /var/www/*
-
 #wp
 RUN wget https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz && rm -rf latest.tar.gz
 COPY ./srcs/wp-config.php wordpress
 
+RUN chown -R www-data:www-data /var/www/*
+RUN chmod -R 755 /var/www/*
 COPY ./srcs/start_server.sh ./
 COPY ./srcs/index_off.sh ./
 COPY ./srcs/index_on.sh ./
